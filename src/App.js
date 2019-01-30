@@ -37,11 +37,21 @@ class App extends Component {
    }
    
    render() {
+      // inline styling for 'Switch Name' button
+      const style = {
+         backgroundColor: 'white',
+         font: 'inherit',
+         border: '1px solid blue',
+         padding: '8px',
+         cursor: 'pointer' 
+      };
       return ( // name and age become the props that are passed to the Person component in Person.js
          <div className="App">
          <h1>Hi, I'm a react App!</h1>
          <p>This is actually working!</p> 
-         <button onClick={() => this.switchNameHandler("Julie!!!")}>Switch Name</button>
+         <button 
+            style={style}
+            onClick={() => this.switchNameHandler("Julie!!!")}>Switch Name</button>
          
          <Person 
             name={this.state.persons[0].name} 
