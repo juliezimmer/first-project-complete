@@ -8,7 +8,7 @@ const Person = (props) => {
          <p>{props.children}</p>
          <input   
             type="text" 
-            onChange={props.changed} 
+            onChange={props.changed} // points to changed={this.nameChangedHandler} in App.js as part of the Person component that is returned after it goes through the .map array method.
             value={props.name}
             /> 
       </div>
