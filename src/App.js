@@ -32,9 +32,17 @@ class App extends Component {
             { name: "Julie", age: 35 },
             { name: event.target.value, age: 16 },
             { name: "Gina" , age: 18 }
-         ]
+         ],
+         showPersons: false   // default is nothing showing. 
       });
-   }
+   };
+
+   // this syntax creates a method; this syntax also ensures that the 'this' keyword inside this method always returns to this class. 
+   togglePersonsHandler = () => {
+      const doesShow = this.state.showPersons;
+      this.setState({showPersons: !doesShow});
+      
+   };
    
    render() {
       // inline styling for 'Switch Name' button
@@ -47,27 +55,33 @@ class App extends Component {
       };
       return ( // name and age become the props that are passed to the Person component in Person.js
          <div className="App">
-         <h1>Hi, I'm a react App!</h1>
-         <p>This is actually working!</p> 
-         <button 
-            style={style}
-            onClick={() => this.switchNameHandler("Julie!!!")}>Switch Name</button>
+            <h1>Hi, I'm a react App!</h1>
+            <p>This is actually working!</p> 
+            <button 
+               style={style}
+               onClick={this.togglePersonsHandler}>
+               Toggle Persons </button>
+            { 
+               this.state.showPersons ?   
+                  <div>
+                     <Person 
+                        name={this.state.persons[0].name} 
+                        age={this.state.persons[0].age} />
+                     
+                     <Person 
+                        name={this.state.persons[1].name} 
+                        age={this.state.persons[1].age}
+                        click={this.switchNameHandler.bind(this,"Julie!")}
+                        changed={this.nameChangedHandler}   > 
+                        My hobby is writing poetry.
+                        </Person>
+                     
+                     <Person 
+                        name={this.state.persons[2].name} 
+                        age={this.state.persons[2].age} />  
+                  </div> : null
+            } 
          
-         <Person 
-            name={this.state.persons[0].name} 
-            age={this.state.persons[0].age} />
-         
-         <Person 
-            name={this.state.persons[1].name} 
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this,"Julie!")}
-            changed={this.nameChangedHandler}   > 
-            My hobby is writing poetry.
-            </Person>
-         
-         <Person 
-            name={this.state.persons[2].name} 
-            age={this.state.persons[2].age} />  
          </div>
       );
    }
