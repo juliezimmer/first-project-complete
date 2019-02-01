@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
+import Radium from 'radium';
 import Person from './Person/Person';
+
 
 class App extends Component {
    state =  {
@@ -48,29 +50,35 @@ class App extends Component {
       const doesShow = this.state.showPersons;
       this.setState({showPersons: !doesShow});
    };
-   
+    
    render() {
-      // inline styling for 'Switch Name' button
+      // styling for 'Toggle Persons' button
       const style = {
-         backgroundColor: 'white',
+         backgroundColor: 'green',
+         color: 'white',
          font: 'inherit',
          border: '1px solid blue',
          padding: '8px',
-         cursor: 'pointer' 
+         cursor: 'pointer',
+         ':hover': {
+            backgroundColor: 'lightgreen',
+            color: 'black'
+         }
       };
-      // by default, the variable is null 
-      let persons = null;
-      // if this.state.showPersons is true
-      if (this.state.showPersons) {
+      let persons = null; // by default, the variable is null because nothing is showing in the browser. Clicking the Toggle Persons button makes names show up.
+
+      if (this.state.showPersons) { // if this.state.showPersons is true
          // if true, set the value of persons to this:
          persons = (
             <div>
                {this.state.persons.map((person, index) => {
                   return <Person 
+                     // click on the person's name
                      click={() => this.deletePersonHandler(index)}
                      name={person.name} 
                      age={person.age}
                      key={person.id} 
+                     // name changed by entering text in the input element
                      changed={(event) => this.nameChangedHandler(event,person.id)} 
                      // In Person.js, onChange={props.changed} as an attribute of the <input /> element. 
                      // Here, changed is an anonymous function and the first function to be executed. 
@@ -78,12 +86,25 @@ class App extends Component {
                })}
             </div> 
          );
+         style.backgroundColor = 'red';
+        style[':hover'] = {
+            backgroundColor: 'salmon',
+            color: 'black'
+         }
       }
 
+      // CSS styling added dynamically
+      let classes = [];
+      if (this.state.persons.length <= 2) {
+         classes.push('red'); // classes = ['red']
+      }
+      if (this.state.persons.length <= 1) {
+         classes.push('bold'); // classes = ['red', 'bold']
+      }
       return ( // name and age become the props that are passed to the Person component in Person.js
          <div className="App">
             <h1>Hi, I'm a react App!</h1>
-            <p>This is actually working!</p> 
+            <p className={classes.join('  ')}>This is really working!</p> 
             <button 
                style={style}
                onClick={this.togglePersonsHandler}>
@@ -95,4 +116,4 @@ class App extends Component {
    }
 }
 
-export default App;
+export default Radium(App);
