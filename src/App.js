@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
 
 
@@ -51,19 +51,9 @@ class App extends Component {
    };
     
    render() {
-      // styling for 'Toggle Persons' button
-      const style = {
-         backgroundColor: 'green',
-         color: 'white',
-         font: 'inherit',
-         border: '1px solid blue',
-         padding: '8px',
-         cursor: 'pointer', 
-      };
       let persons = null; // by default, the variable is null because nothing is showing in the browser. Clicking the Toggle Persons button makes names show up.
-
-      if (this.state.showPersons) { // if this.state.showPersons is true
-         // if true, set the value of persons to this:
+      let btnClass = '';
+      if (this.state.showPersons) { // if this.state.showPersons is true, set value of persons to this: 
          persons = (
             <div>
                {this.state.persons.map((person, index) => {
@@ -81,23 +71,22 @@ class App extends Component {
                })}
             </div> 
          );
-         style.backgroundColor = 'red';
+         btnClass = classes.Red;
       }
-
       // CSS styling added dynamically
-      const classes = [];
+      const assignedClasses = [];
       if (this.state.persons.length <= 2) {
-         classes.push('red'); // classes = ['red']
+         assignedClasses.push(classes.red);
       }
       if (this.state.persons.length <= 1) {
-         classes.push('bold'); // classes = ['red', 'bold']
+         assignedClasses.push( classes.bold ); 
       }
       return ( 
-         <div className="App">
+         <div className={classes.App}>
             <h1>Hi, I'm a react App!</h1>
-            <p className={classes.join('  ')}>This is really working!</p> 
+            <p className={assignedClasses.join('  ')}>This is really working!</p> 
             <button 
-               style={style}
+               className={btnClass}
                onClick={this.togglePersonsHandler}>
                Toggle Persons 
             </button>
