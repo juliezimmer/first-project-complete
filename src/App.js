@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Radium from 'radium';
+import Radium, { StyleRoot } from 'radium';
 import Person from './Person/Person';
 
 
@@ -87,31 +87,33 @@ class App extends Component {
             </div> 
          );
          style.backgroundColor = 'red';
-        style[':hover'] = {
-            backgroundColor: 'salmon',
-            color: 'black'
+         style[':hover'] = {
+               backgroundColor: 'salmon',
+               color: 'black'
          }
       }
 
       // CSS styling added dynamically
-      let classes = [];
+      const classes = [];
       if (this.state.persons.length <= 2) {
          classes.push('red'); // classes = ['red']
       }
       if (this.state.persons.length <= 1) {
          classes.push('bold'); // classes = ['red', 'bold']
       }
-      return ( // name and age become the props that are passed to the Person component in Person.js
-         <div className="App">
-            <h1>Hi, I'm a react App!</h1>
-            <p className={classes.join('  ')}>This is really working!</p> 
-            <button 
-               style={style}
-               onClick={this.togglePersonsHandler}>
-               Toggle Persons 
-            </button>
-            {persons}
-         </div>
+      return ( 
+         <StyleRoot>
+            <div className="App">
+               <h1>Hi, I'm a react App!</h1>
+               <p className={classes.join('  ')}>This is really working!</p> 
+               <button 
+                  style={style}
+                  onClick={this.togglePersonsHandler}>
+                  Toggle Persons 
+               </button>
+               {persons}
+            </div>
+         </StyleRoot>
       );
    }
 }
