@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from '../Components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons'; 
+import Cockpit from '../components/Cockpit/Cockpit';
 
 class App extends Component {
    state =  {
@@ -28,14 +29,10 @@ class App extends Component {
       // The state needs to be updated at the array index/position that was changed, by using the spread operator again:
       const persons = [...this.state.persons];
       persons[personIndex] = person;
-
       this.setState({ persons: persons }); 
    }
 
    deletePersonHandler = (personIndex) => {
-      // make a copy of the persons array using the slice method without any arguments passed in.
-     // const persons = this.state.persons.slice();
-
      // ES6 spread operator option: 
      const persons = [...this.state.persons];
       // splice the new copied array starting at personIndex and splicing/removing one element
@@ -51,45 +48,22 @@ class App extends Component {
    };
     
    render() {
-      let persons = null; // by default, the variable is null because nothing is showing in the browser. Clicking the Toggle Persons button makes names show up.
-      let btnClass = '';
+      let persons = null; 
+      
       if (this.state.showPersons) { // if this.state.showPersons is true, set value of persons to this: 
-         persons = (
-            <div>
-               {this.state.persons.map((person, index) => {
-                  return <Person 
-                        click={() => this.deletePersonHandler(index)}
-                        name={person.name} 
-                        age={person.age}
-                        key={person.id}
-                        // name changed by entering text in the input element
-                        changed={(event) => this.nameChangedHandler(event,person.id)} 
-                        // In Person.js, onChange={props.changed} as an attribute of the <input /> element. 
-                        // Here, changed is an anonymous function and the first function to be executed. 
-                  />
-               })}
-            </div> 
-         );
-         btnClass = classes.Red;
+         persons = <Persons 
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />;
       }
-      // CSS styling added dynamically
-      const assignedClasses = [];
-      if (this.state.persons.length <= 2) {
-         assignedClasses.push(classes.red);
-      }
-      if (this.state.persons.length <= 1) {
-         assignedClasses.push( classes.bold ); 
-      }
-      return ( 
+     return ( 
          <div className={classes.App}>
-            <h1>Hi, I'm a react App!</h1>
-            <p className={assignedClasses.join('  ')}>This is really working!</p> 
-            <button 
-               className={btnClass}
-               onClick={this.togglePersonsHandler}>
-               Toggle Persons 
-            </button>
-            {persons}
+            <Cockpit 
+               showPersons={this.state.showPersons} 
+               persons={this.state.persons}  
+               clicked={this.togglePersonsHandler} 
+            />
+         {persons}
          </div>
       );
    }
