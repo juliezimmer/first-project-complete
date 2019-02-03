@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
-
+import Person from '../Components/Persons/Person/Person';
 
 class App extends Component {
    state =  {
@@ -23,6 +22,7 @@ class App extends Component {
          ...this.state.persons[personIndex]
       };
       // To change the name:
+      // this is what the user entered in the input element.
       person.name = event.target.value;
 
       // The state needs to be updated at the array index/position that was changed, by using the spread operator again:
@@ -58,15 +58,14 @@ class App extends Component {
             <div>
                {this.state.persons.map((person, index) => {
                   return <Person 
-                     // click on the person's name
-                     click={() => this.deletePersonHandler(index)}
-                     name={person.name} 
-                     age={person.age}
-                     key={person.id} 
-                     // name changed by entering text in the input element
-                     changed={(event) => this.nameChangedHandler(event,person.id)} 
-                     // In Person.js, onChange={props.changed} as an attribute of the <input /> element. 
-                     // Here, changed is an anonymous function and the first function to be executed. 
+                        click={() => this.deletePersonHandler(index)}
+                        name={person.name} 
+                        age={person.age}
+                        key={person.id}
+                        // name changed by entering text in the input element
+                        changed={(event) => this.nameChangedHandler(event,person.id)} 
+                        // In Person.js, onChange={props.changed} as an attribute of the <input /> element. 
+                        // Here, changed is an anonymous function and the first function to be executed. 
                   />
                })}
             </div> 
