@@ -82,17 +82,17 @@ class App extends PureComponent {
             clicked={this.deletePersonHandler}
             changed={this.nameChangedHandler} />;
       }
-     return ( 
+
+      return ( 
          <div className={classes.App}>
             <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
-            <Cockpit 
-               appTitle={this.props.title}
-               showPersons={this.state.showPersons} 
-               persons={this.state.persons}  
-               clicked={this.togglePersonsHandler} 
-            />
-         {persons}
-         </div>
+               <Cockpit 
+                  appTitle={this.props.title}
+                  showPersons={this.state.showPersons} // boolean 
+                  persons={this.state.persons}  
+                  clicked={this.togglePersonsHandler} />
+            {persons}
+         </div>   
       );
    }
 }

@@ -30,7 +30,7 @@ class Persons extends PureComponent {
    }
    render () {
       console.log("[Persons.js] Inside render");
-      return (
+      return ( // This is the code that puts each name card in the browser with the name, age, and text input.
          this.props.persons.map((person, index) => {
             return <Person 
                click={() => this.props.clicked(index)}

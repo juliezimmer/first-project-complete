@@ -7,7 +7,7 @@
 }
 
 /* applies to any button nested inside the App class */
-.Cockpit button {
+.Button {
    /* these are the same styles that were in the style object in App.js */
    border: 1px solid blue;
    padding: 16px;
@@ -18,11 +18,16 @@
 }
 
 /* applied when cursor hovers over button or clicks and hovers */
-.Cockpit button:hover {
+.Button:hover {
    background-color: lightgreen;
    color: black;
 }
 
-.Cockpit button.Red {
+.Button.Red {
    background-color: red;
+}
+
+.Button.Red:hover {
+   background-color: salmon;
+   color: black;
 }
