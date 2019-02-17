@@ -1,33 +1,16 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import classes from './App.css';
 import Persons from '../components/Persons/Persons'; 
 import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 
-class App extends PureComponent {
+class App extends Component {
    constructor(props) {
       super(props);
       console.log("[App.js] Inside constructor", props);
    }
-   componentWillMount() {
-      console.log("[App.js] Inside componentWillMount()");
-   }
-   componentDidMount() {
-   console.log("[App.js] Inside componentDidMount");
-   }
-
-   // shouldComponentUpdate(nextProps, nextState) { // updating
-   //    console.log("[UPDATE App.js] Inside shouldComponentUpdate", nextProps, nextState);   
-   //    // returns true or false
-   //    // if true, updating continues
-   //    // if false, updating is canceled
-   //    return true;
-   // }
-   componentWillUpdate(nextProps, nextState) {
-      console.log("[UPDATE App.js] Inside componentWillUpdate", nextProps, nextState);
-   }
-   componentDidUpdate () {
-      console.log("[UPDATE App.js] Inside componenDidUpdate");
-   }
+   
    // code initialized
    state =  {
       persons: [
@@ -37,7 +20,28 @@ class App extends PureComponent {
       ],
       showPersons: false   // default is nothing showing.
    } 
-  
+
+   static getDerivedStateFromProps(state, props) {
+      console.log("[App.js] inside getDerivedStateFromProps", props);
+      return state;
+   }
+   
+   componentDidMount() {
+      console.log("[App.js] Inside componentDidMount");
+      }
+   
+   shouldComponentUpdate(nextProps, nextState) { // updating
+      console.log("[UPDATE App.js] Inside shouldComponentUpdate", nextProps, nextState);   
+      // returns true or false
+      // if true, updating continues
+      // if false, updating is canceled
+      return true;
+   }
+
+   componentDidUpdate () {
+      console.log("[UPDATE App.js] Inside componenDidUpdate");
+   }
+
    nameChangedHandler = (event, id ) => {
       const personIndex = this.state.persons.findIndex(p => {
          return p.id === id;
@@ -84,17 +88,29 @@ class App extends PureComponent {
       }
 
       return ( 
-         <div className={classes.App}>
+         <Aux> 
             <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
                <Cockpit 
-                  appTitle={this.props.title}
+                  appTitle={this.props.title} // accesses the app.title attribute used in the <App /> in index.js.  This is then passed to the Cockpit component
                   showPersons={this.state.showPersons} // boolean 
                   persons={this.state.persons}  
                   clicked={this.togglePersonsHandler} />
             {persons}
-         </div>   
+         </Aux>   
       );
    }
 }
 
-export default App;
+export default withClass(App, classes.App);
+ 
+
+// componentWillMount() {
+   //    console.log("[App.js] Inside componentWillMount()");
+   // }
+   // 
+
+   
+   // componentWillUpdate(nextProps, nextState) {
+   //    console.log("[UPDATE App.js] Inside componentWillUpdate", nextProps, nextState);
+   // }
+   
