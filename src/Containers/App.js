@@ -10,7 +10,6 @@ class App extends Component {
       super(props);
       console.log("[App.js] Inside constructor", props);
    }
-   
    // code initialized
    state =  {
       persons: [
@@ -18,7 +17,10 @@ class App extends Component {
          { id: '2', name: "Gina", age: 18 },
          { id: '3', name: "Zach" , age: 15 }
       ],
-      showPersons: false   // default is nothing showing.
+      otherState: 'some other value',
+      showPersons: false,   // default is nothing showing
+      showCockpit: true,
+      changeCounter: 0
    } 
 
    static getDerivedStateFromProps(state, props) {
@@ -46,20 +48,34 @@ class App extends Component {
       const personIndex = this.state.persons.findIndex(p => {
          return p.id === id;
       });  
-      // To avoid mutating the state directly, create a new object and use the spread operator.  The spread operator will distribute all of the properties of this.state.persons into the person object being created. 
+      // Spread operator is used to create a new object to change. 
+      // Spread Operatpor distributes all the properties in this.state.persons on the new object being created.
       // This is a copy of the state
       const person = {
          ...this.state.persons[personIndex]
       };
-      // To change the name:
-      // this is what the user entered in the input element.
+      // To change the name, use:
       person.name = event.target.value;
 
       // The state needs to be updated at the array index/position that was changed, by using the spread operator again:
       const persons = [...this.state.persons];
       persons[personIndex] = person;
-      this.setState({ persons: persons }); 
-   }
+      // the wrong way to update state:
+      // this.setState(
+      //    { 
+      //       persons: persons,
+      //       changeCounter: this.state.changeCounter + 1
+      //    }
+      // ); 
+
+      // this guarantees an accurate previous state and a proper update with the latest information/data for the state object.
+      this.setState((prevState, props) => {
+         return  {
+            persons: persons,
+            changeCounter: prevState.changeCounter + 1
+         };
+      });
+   };
 
    deletePersonHandler = (personIndex) => {
      // ES6 spread operator option: 
@@ -81,26 +97,32 @@ class App extends Component {
       let persons = null; 
       
       if (this.state.showPersons) { // if this.state.showPersons is true, set value of persons to this: 
-         persons = <Persons 
-            persons={this.state.persons}
-            clicked={this.deletePersonHandler}
-            changed={this.nameChangedHandler} />;
+         persons = (
+            <Persons 
+               persons={this.state.persons}
+               clicked={this.deletePersonHandler}
+               changed={this.nameChangedHandler} />
+         );
       }
-
       return ( 
          <Aux> 
-            <button onClick={() => {this.setState({showPersons: true})}}>Show Persons</button>
+            <button 
+               onClick={() => {this.setState({showCockpit: false});
+               }} >Remove Cockpit
+            </button>
+            {this.state.showCockpit ? (
                <Cockpit 
                   appTitle={this.props.title} // accesses the app.title attribute used in the <App /> in index.js.  This is then passed to the Cockpit component
                   showPersons={this.state.showPersons} // boolean 
-                  persons={this.state.persons}  
+                  personsLength={this.state.persons.length}  
                   clicked={this.togglePersonsHandler} />
+            ) : null}
             {persons}
          </Aux>   
       );
    }
 }
-
+// the regular function withClass() is called on the export default, App.
 export default withClass(App, classes.App);
  
 
