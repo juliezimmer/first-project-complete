@@ -1,24 +1,28 @@
-import React, {  useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext }from 'react';
 import classes from './Cockpit.css';
-// import Aux from '../../hoc/Aux'; 
+import AuthContext from '../../context/auth-context';
 
 const Cockpit = props => {
-   // const toggleBtnRef = useRef(null);
+   const toggleBtnRef = useRef(null);
+   // provides access to context
+   const authContext = useContext(AuthContext);
 
-   // useEffect(() => {
-   //   console.log("[Cockpit.js] Inside useEffect");
-   // setTimeout removed
-   //   toggleBtnRef.current.click();
-   //   return () => {
-   //   console.log("[Cockpit.js] Clean up work in useEffect");//    };
-   // }, []);
+   console.log(authContext.authenticated);
 
-   // useEffect(() => {
-   //    console.log("[Cockpit.js] 2nd useEffect");
-   //    return () => {
-   //       console.log("[Cockpit.js] Clean up work in 2nd useEffect"); 
-   //    }
-   // });
+   useEffect(() => {
+      console.log("[Cockpit.js] Inside useEffect");
+      toggleBtnRef.current.click();
+      return () => {
+         console.log("[Cockpit.js] Clean up work in useEffect");   
+      };
+   }, []);
+
+   useEffect(() => {
+      console.log("[Cockpit.js] 2nd useEffect");
+      return () => {
+         console.log("[Cockpit.js] Clean up work in 2nd useEffect"); 
+      };
+   });
 
    const assignedClasses = [];
    let btnClass = '';
@@ -32,22 +36,25 @@ const Cockpit = props => {
    }
 
    if (props.personsLength <= 1) {
-      assignedClasses.push( classes.bold ); // classes = ['red', 'bold']
+      assignedClasses.push(classes.bold); // classes = ['red', 'bold']
    }
    
    return (
       <div className={classes.Cockpit} >
-      <h1>{props.appTitle}</h1> 
+         <h1>{props.appTitle}</h1> 
          <p className={assignedClasses.join('  ')}>
             This is really working!
          </p> 
          <button 
-            // ref={toggleBtnRef}
+            ref={toggleBtnRef}
             className={btnClass} // variable defined on line 7
             onClick={props.clicked}>
             Toggle Persons 
          </button>
-         </div>
+         <button onClick={authContext.login}>
+            Log in
+         </button>
+      </div>
    );
 };
 

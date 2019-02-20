@@ -1,6 +1,7 @@
 import React, { PureComponent }  from 'react'; 
 import Person from './Person/Person';
 
+
 class Persons extends PureComponent {
    // static getDerivedStateFromProps(props, state){
    //    console.log("[Persons.js] Inside getDerivedStateFromProps");
@@ -20,13 +21,14 @@ class Persons extends PureComponent {
    //    }
    // }
 
-   getSnapshotBeforeUpdate( prevProps, prevState) {
+   getSnapshotBeforeUpdate(prevProps, prevState) {
       console.log("[Persons.js] Inside getSnapshopBeforeUpdate");
-      return null;
+      return { message: "snapshot"};
    }
 
-   componentDidUpdate() {
+   componentDidUpdate(prevProps, prevState, snapshot) {
       console.log("[Person.js] Inside componentDidUpdate");
+      console.log(snapshot);
    }
 
    // use for clean-up
@@ -36,17 +38,18 @@ class Persons extends PureComponent {
 
    render () {
       console.log("[Persons.js] Inside render");
-      return ( // This is the code that puts each name card in the browser with the name, age, and text input.
-         this.props.persons.map((person, index) => {
-            return <Person 
+      return this.props.persons.map((person, index) => {
+         return (
+            <Person 
                click={() => this.props.clicked(index)}
                name={person.name} 
                age={person.age}
                key={person.id}
                // name changed by entering text in the input element
-               changed={(event) => this.props.changed(event, person.id)} 
+               changed={event => this.props.changed(event, person.id)}
             />
-         }))
+         );
+      })
    }
 }
 export default Persons;

@@ -1,32 +1,41 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Aux from '../../../hoc/Aux';
-
 import withClass from '../../../hoc/withClass';
-
 import classes from './Person.css';
+import AuthContext from '../../../context/auth-context';
 
 class Person extends Component {
    constructor(props) {
-      super();
+      super(props);
       this.inputElementRef = React.createRef();
    }
+
+   // AuthContext is the context object
+   static contextType = AuthContext;
+
    componentDidMount() {
       // this.inputElement.focus();
-      this.inputElementRef.current.focus(); // provides access to current reference
-
+      this.inputElementRef.current.focus(); // provides access to current reference on line 11
+      console.log(this.context.authenticated);
    }
+   
    render () {
       console.log("[Person.js] Inside render");
       return ( 
-         // <Aux> </Aux> is being used as the wrapping component. Everything between the opening and closing <Aux> tags is props.children.
          <Aux>
-            <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age}!</p>
+            {this.context.authenticated ? 
+               ( <p>Authenticated</p> ) : ( <p>Please Login</p> )}
+            
+            <p onClick={this.props.click}>
+               I'm {this.props.name} and I am {this.props.age}!
+            </p>
             <p key="i2">{this.props.children}</p> 
             <input 
                key="i3"
                ref={this.inputElementRef}
                // ref={(inputEl) => {this.inputElement = inputEl}}type="text" 
+               type="text"
                onChange={this.props.changed} 
                value={this.props.name} /> 
          </Aux>
